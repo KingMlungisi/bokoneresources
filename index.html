@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bokone Resources | Phakane Crossings</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:#1a1a1a;line-height:1.6;overflow-x:hidden;background:#fff}
+  a{text-decoration:none;color:inherit}
+  img,video{max-width:100%;display:block}
+  .container{max-width:1280px;margin:0 auto;padding:0 40px}
+
+  /* HEADER */
+  header{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(12,35,60,0.97);backdrop-filter:blur(12px)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:80px}
+  .logo{background:#fff;padding:6px 12px;border-radius:6px}
+  .logo img{height:48px}
+  .nav-links{display:flex;gap:38px;list-style:none}
+  .nav-links a{color:#fff;font-size:13.5px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;position:relative;padding:6px 0}
+  .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#fff;transition:width .3s}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+  .social{display:flex;gap:14px;align-items:center}
+  .social a{color:#fff;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;transition:all .25s}
+  .social a:hover{background:rgba(255,255,255,0.28);transform:translateY(-2px)}
+  .social svg{width:16px;height:16px;fill:#fff}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+  .hamburger span{display:block;width:26px;height:2.5px;background:#fff;border-radius:2px}
+  .mobile-menu{display:none;position:fixed;top:80px;left:0;width:100%;background:#0c233c;padding:20px 0;z-index:99;flex-direction:column;align-items:center;gap:18px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .mobile-menu a{color:#fff;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 0}
+  .mobile-menu.active{display:flex}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;align-items:center;background:#0c233c;color:#fff;padding-top:80px}
+  .hero-content{max-width:820px}
+  .welcome{font-size:15px;letter-spacing:3.5px;font-weight:500;margin-bottom:18px;opacity:.95}
+  .hero h1{font-size:clamp(3rem,6.5vw,5.2rem);font-weight:700;line-height:1.05;margin-bottom:28px;letter-spacing:-1px}
+  .hero p{font-size:1.15rem;opacity:.92;max-width:560px;margin-bottom:40px;line-height:1.55}
+  .btn{display:inline-block;padding:15px 38px;border:2px solid #fff;color:#fff;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s}
+  .btn:hover{background:#fff;color:#0c233c}
+
+  /* SECTIONS */
+  section{padding:100px 0;background:#fff}
+  section.alt{background:#f5f8fb}
+  .section-title{font-size:2.4rem;font-weight:700;color:#0c233c;margin-bottom:14px}
+  .section-sub{color:#4b5563;max-width:700px;margin-bottom:45px;font-size:1.05rem}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+
+  /* VIDEO */
+  .video-box{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 20px 45px rgba(0,0,0,.14);background:#000;margin-top:50px}
+  .video-box video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+  .video-mute{position:absolute;bottom:16px;right:16px;width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,0.55);border:1.5px solid rgba(255,255,255,0.4);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:5}
+  .video-mute:hover{background:rgba(0,0,0,0.8)}
+
+  /* ABOUT IMAGE */
+  .about-img{border-radius:12px;box-shadow:0 20px 45px rgba(0,0,0,.12);width:100%;height:100%;object-fit:cover}
+
+  /* SLIDER */
+  .slider-wrap{position:relative;overflow:hidden;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.12)}
+  .slider{display:flex;transition:transform .5s ease;height:480px}
+  .slide{min-width:100%;height:100%}
+  .slide img{width:100%;height:100%;object-fit:cover}
+  .slider-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(12,35,60,0.75);color:#fff;border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background .25s}
+  .slider-btn:hover{background:rgba(12,35,60,0.95)}
+  .slider-btn.prev{left:18px}
+  .slider-btn.next{right:18px}
+  .slider-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+  .dot{width:10px;height:10px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:background .3s}
+  .dot.active{background:#0c233c}
+
+  /* SERVICE CARDS */
+  .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);transition:transform .3s,box-shadow .3s}
+  .card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.12)}
+  .card img{width:100%;height:220px;object-fit:cover}
+  .card-body{padding:26px}
+  .card h3{font-size:1.25rem;margin-bottom:10px;color:#0c233c}
+  .card p{color:#4b5563;font-size:.95rem}
+
+  .value-item{display:flex;gap:16px;margin-bottom:24px}
+  .value-icon{width:48px;height:48px;border-radius:10px;background:#e0f2fe;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px}
+  .contact-info p{margin-bottom:12px;color:#374151}
+  .contact-info strong{color:#0c233c}
+  form{display:flex;flex-direction:column;gap:16px}
+  input,textarea,select{padding:14px 16px;border:1px solid #d1d5db;border-radius:8px;font-size:15px;font-family:inherit;width:100%}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:#0c233c}
+  button[type=submit]{background:#0c233c;color:#fff;border:none;padding:16px;font-weight:600;border-radius:8px;cursor:pointer;transition:background .3s}
+  button[type=submit]:hover{background:#134e4a}
+
+  /* FOOTER */
+  footer{background:#0c233c;color:#fff;padding:50px 0 30px;text-align:center}
+  .footer-logo{display:inline-block;background:#fff;padding:10px 18px;border-radius:8px;margin-bottom:18px}
+  .footer-logo img{height:42px}
+  footer p{opacity:.75;font-size:.92rem}
+
+  @media(max-width:980px){
+    .nav-links,.social{display:none}
+    .hamburger{display:flex}
+    .grid-2,.contact-grid{grid-template-columns:1fr}
+    .hero h1{font-size:2.6rem}
+    .container{padding:0 22px}
+    .slider{height:340px}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="container">
+    <nav>
+      <a href="#home" class="logo"><img src="logo.png" alt="Bokone Resources"></a>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">HOME</a></li>
+        <li><a href="#about">ABOUT US</a></li>
+        <li><a href="#projects">PROJECTS</a></li>
+        <li><a href="#services">SERVICES</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+      <div class="social">
+        <a href="#" title="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="#fff" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="#fff" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#fff" stroke-width="2"/></svg></a>
+        <a href="#" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+      <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="toggleMenu()">HOME</a>
+  <a href="#about" onclick="toggleMenu()">ABOUT US</a>
+  <a href="#projects" onclick="toggleMenu()">PROJECTS</a>
+  <a href="#services" onclick="toggleMenu()">SERVICES</a>
+  <a href="#contact" onclick="toggleMenu()">CONTACT</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-content">
+      <div class="welcome">WELCOME TO BOKONE RESOURCES</div>
+      <h1>Phakane Crossings</h1>
+      <p>A modern regional shopping destination under development at the N14 &amp; Tlhabane Road intersection in Mothibistad, Kuruman – serving the mining, farming and residential communities of Ga-Segonyana.</p>
+      <a href="#projects" class="btn">VIEW PROJECT</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US -->
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">About Us</h2>
+    <p class="section-sub">At Bokone Resources we pride ourselves in excellence across property investment, development and centre management.</p>
+
+    <div class="grid-2">
+      <div>
+        <p>Bokone Resources® (Pty) Ltd is a proudly South African property investment and development company based in Mothibistad, Kuruman, Northern Cape. Owned by Pelele Kitso and Sewedi Tuelo, the company focuses on creating high-quality commercial facilities that serve the mining, farming and residential communities of the region.</p>
+        <br>
+        <p>Our flagship project, <strong>Phakane Crossings</strong> (previously known as Kagung Village Mall), is strategically located at the N14 intersection with Tlhabane Road. The development will deliver a modern regional shopping centre with national retailers, local businesses, essential services and generous parking.</p>
+        <br>
+        <p>We hold ourselves to the highest standards of professional ethics and accountability.</p>
+      </div>
+      <div>
+        <img src="images/about-side.jpg" alt="Bokone Resources team" class="about-img">
+      </div>
+    </div>
+
+    <!-- Video below the team photo -->
+    <div class="video-box">
+      <video id="about-video" autoplay muted loop playsinline>
+        <source src="videos/background.mp4" type="video/mp4">
+      </video>
+      <button class="video-mute" id="video-mute" title="Toggle sound">🔇</button>
+    </div>
+
+    <div style="margin-top:70px">
+      <h3 style="font-size:1.6rem;margin-bottom:30px;color:#0c233c">Our Core Values</h3>
+      <div class="grid-3">
+        <div class="value-item"><div class="value-icon">🛡️</div><div><strong>Integrity</strong><p>Ethically and honestly doing what we say we will do.</p></div></div>
+        <div class="value-item"><div class="value-icon">⚡</div><div><strong>High Performance</strong><p>Achieving superior results and continuously stretching our capabilities.</p></div></div>
+        <div class="value-item"><div class="value-icon">🌱</div><div><strong>Stewardship</strong><p>Commitment to environmental responsibility and sustainable development.</p></div></div>
+        <div class="value-item"><div class="value-icon">👷</div><div><strong>Safety</strong><p>A relentless focus on zero work-related injuries and community safety.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="alt">
+  <div class="container">
+    <h2 class="section-title">Phakane Crossings</h2>
+    <p class="section-sub">Flagship regional shopping centre currently under development. Explore the 3D visualisations.</p>
+
+    <div class="slider-wrap">
+      <div class="slider" id="slider">
+        <div class="slide"><img src="images/IMG-20230116-WA0007.jpg" alt="Main entrance"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0008.jpg" alt="Front elevation"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0009.jpg" alt="Approach"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0010.jpg" alt="Aerial with Builders"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0011.jpg" alt="Overall aerial"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0012.jpg" alt="Site layout"></div>
+        <div class="slide"><img src="images/IMG-20230114-WA0002.jpg" alt="Entrance signage"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0002.jpg" alt="Main façade"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0003.jpg" alt="Roof plan"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0004.jpg" alt="Side aerial"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0005.jpg" alt="Builders & Nando's"></div>
+        <div class="slide"><img src="images/IMG-20230116-WA0006.jpg" alt="Parking"></div>
+        <div class="slide"><img src="images/IMG-20230114-WA0001.jpg" alt="Additional view"></div>
+      </div>
+      <button class="slider-btn prev" onclick="moveSlide(-1)">‹</button>
+      <button class="slider-btn next" onclick="moveSlide(1)">›</button>
+    </div>
+    <div class="slider-dots" id="dots"></div>
+
+    <div style="margin-top:40px;background:#fff;padding:28px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,.06)">
+      <h3 style="color:#0c233c;margin-bottom:12px">Project Details</h3>
+      <p><strong>Location:</strong> N14 Intersection with Tlhabane Road, Mothibistad, Kuruman, Northern Cape</p>
+      <p><strong>Coordinates:</strong> 27°28'26.3"S 23°30'42.9"E</p>
+      <p><strong>Developer / Owner:</strong> Bokone Resources® (Pty) Ltd</p>
+      <p><strong>Status:</strong> Under Construction</p>
+      <p style="margin-top:10px;color:#4b5563"><em>Previously known as Kagung Village Mall</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Integrated property development, construction and management solutions.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <img src="images/service-development.jpg" alt="Property Development">
+        <div class="card-body">
+          <h3>Property Development</h3>
+          <p>End-to-end development of commercial, retail and mixed-use projects from concept to practical completion.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/service-construction.jpg" alt="Construction Management">
+        <div class="card-body">
+          <h3>Construction Management</h3>
+          <p>Main contractor and project management services delivering quality buildings on time and within budget.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/service-management.jpg" alt="Property Management">
+        <div class="card-body">
+          <h3>Property Management</h3>
+          <p>Full centre management, leasing, facilities management and tenant mix strategy.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/service-consulting.jpg" alt="Consulting & Appraisal">
+        <div class="card-body">
+          <h3>Consulting & Appraisal</h3>
+          <p>Feasibility studies, retail research, shop appraisal and advisory support.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/service-renovation.jpg" alt="Building & Renovations">
+        <div class="card-body">
+          <h3>Building & Renovations</h3>
+          <p>Alterations, additions and refurbishment of existing commercial facilities.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/service-student.jpg" alt="Student Accommodation">
+        <div class="card-body">
+          <h3>Student Accommodation</h3>
+          <p>Development and management of quality student housing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="alt">
+  <div class="container">
+    <h2 class="section-title">Contact & Leasing</h2>
+    <p class="section-sub">Reach out for general enquiries or submit a leasing application for Phakane Crossings.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p><strong>Bokone Resources® (Pty) Ltd</strong></p>
+        <p>Registration No: 2012/185663/07</p>
+        <p>40 Boikhutso Street<br>Mothibistad, Kuruman<br>Northern Cape, 8474</p>
+        <p>Tel: +27 (84) 251-4613<br>+27 (72) 858-2707</p>
+        <p>Email: bokoneresorces@gmail.com</p>
+        <br>
+        <p><strong>Directors</strong><br>Pelele Kitso · Sewedi Tuelo</p>
+      </div>
+
+      <form action="https://formsubmit.co/bokoneresorces@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New Leasing / Contact Enquiry – Phakane Crossings">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="name" placeholder="Your Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="tel" name="phone" placeholder="Phone Number">
+        <select name="enquiry_type" required>
+          <option value="" disabled selected>Type of Enquiry</option>
+          <option value="Leasing Enquiry">Leasing Enquiry</option>
+          <option value="General Contact">General Contact</option>
+          <option value="Partnership">Partnership / Investment</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" name="company" placeholder="Company / Business Name (optional)">
+        <textarea name="message" rows="5" placeholder="Tell us about your requirements / message" required></textarea>
+        <button type="submit">Send Enquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-logo"><img src="logo.png" alt="Bokone Resources"></div>
+    <p>© 2026 Bokone Resources® (Pty) Ltd. All rights reserved.<br>
+    Developing Phakane Crossings – Serving Ga-Segonyana and the Northern Cape.</p>
+  </div>
+</footer>
+
+<script>
+  const aboutVideo = document.getElementById('about-video');
+  const videoMuteBtn = document.getElementById('video-mute');
+  let isMuted = true;
+  videoMuteBtn.addEventListener('click', () => {
+    isMuted = !isMuted;
+    aboutVideo.muted = isMuted;
+    videoMuteBtn.textContent = isMuted ? '🔇' : '🔊';
+  });
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+  }
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  });
+
+  let currentSlide = 0;
+  const slider = document.getElementById('slider');
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const dotsContainer = document.getElementById('dots');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+  }
+  function updateSlider() {
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+  }
+  function moveSlide(dir) {
+    currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+    updateSlider();
+  }
+  function goToSlide(n) {
+    currentSlide = n;
+    updateSlider();
+  }
+  setInterval(() => moveSlide(1), 5000);
+</script>
+</body>
+</html>
